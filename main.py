@@ -6,6 +6,7 @@ from nextcord.ext import commands
 command_info = {
     'help': 'you literally just used it',
     'prefix': 'change the command prefix',
+    'status': 'change the bot\'s current status',
 }
 
 client = commands.Bot(command_prefix = 'dont ', help_command = None)
@@ -18,6 +19,14 @@ async def on_ready():
 
     print(f'Logged in as\n{client.user.name}\n{client.user.id}\n\nPrefix: {client.command_prefix}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     await client.change_presence(activity = nextcord.Activity(type = nextcord.ActivityType.watching, name = 'hyper sleep'))
+
+@client.event
+async def on_message(message):
+    if message == 'whats the prefix':
+        await message.reply(f'my current prefix is {client.command_prefix}')
+
+    else:
+        await client.process_commands(message)
 
 # Commands
 @client.command()
@@ -35,7 +44,7 @@ async def prefix(ctx, arg = None):
         await ctx.reply(f'The current prefix is `{client.command_prefix}`')
 
     else:
-        if arg.endswith(' ') == False:
+        if arg.endswith(' ') == False and len(arg) > 1:
             arg += ' '
 
         current_prefix = await get_data()
@@ -46,6 +55,15 @@ async def prefix(ctx, arg = None):
 
         client.command_prefix = arg
         await ctx.reply(f'The prefix has been set to `{client.command_prefix}`')
+
+@client.command()
+async def status(ctx, arg = None):
+    if arg == None:
+        await ctx.reply('You need to include a status idiot :rolling_eyes:')
+
+    else:
+        await client.change_presence(activity = nextcord.Activity(type = nextcord.ActivityType.watching, name = arg))
+        await ctx.reply(f'Status set to `{arg}`')
 
 async def get_data():
     with open('stuff.json', 'r') as f:
