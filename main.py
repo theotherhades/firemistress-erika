@@ -22,10 +22,16 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    process_command = True
+
     if message.content.startswith('whats the prefix'):
         await message.reply(f'my current prefix is `{client.command_prefix}`')
+        process_command = False
 
-    else:
+    elif message.author.id == 803404128600195133:
+        await message.add_reaction(':sunglasses:')
+
+    if process_command == True:
         await client.process_commands(message)
 
 # Commands
@@ -39,7 +45,7 @@ async def help(ctx):
     await ctx.reply(embed = embed)
 
 @client.command()
-async def prefix(ctx, arg = None):
+async def prefix(ctx, *, arg = None):
     if arg == None:
         await ctx.reply(f'The current prefix is `{client.command_prefix}`')
 
@@ -57,7 +63,7 @@ async def prefix(ctx, arg = None):
         await ctx.reply(f'The prefix has been set to `{client.command_prefix}`')
 
 @client.command()
-async def status(ctx, arg = None):
+async def status(ctx, *, arg = None):
     if arg == None:
         await ctx.reply('You need to include a status idiot :rolling_eyes:')
 
