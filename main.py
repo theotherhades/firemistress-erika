@@ -22,8 +22,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.startswith('whats the prefix'):
-        await message.reply(f'my current prefix is {client.command_prefix}')
+    if message.content.startswith('whats the prefix'):
+        await message.reply(f'my current prefix is `{client.command_prefix}`')
 
     else:
         await client.process_commands(message)
