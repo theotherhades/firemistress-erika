@@ -29,7 +29,7 @@ async def on_message(message):
         process_command = False
 
     elif message.author.id == 803404128600195133:
-        await message.add_reaction('\N{SUNGLASSES}')
+        await message.add_reaction('\N{SMILING FACE WITH SUNGLASSES}')
 
     if process_command == True:
         await client.process_commands(message)
